@@ -2057,9 +2057,8 @@
         c.name, 
         w.wishes->>'$.first_choice' AS primary_wish, 
         w.wishes->>'$.second_choice' AS backup_wish, 
-        t1.toy_name AS primary_wish_toy_name,
-        t2.toy_name AS backup_wish_toy_name,
         JSON_EXTRACT(w.wishes, '$.colors[0]') AS favorite_color, 
+        JSON_LENGTH(w.wishes->>'$.colors') AS color_count, 
         CASE 
             WHEN t1.difficulty_to_make <= 1 THEN 'Simple Gift'
             WHEN t1.difficulty_to_make = 2 THEN 'Moderate Gift'
@@ -2082,13 +2081,13 @@
         c.name
     LIMIT 5;
 
-| name    | primary_wish    | backup_wish     | primary_wish_toy_name | backup_wish_toy_name | favorite_color | gift_complexity | workshop_assignment |
-| ------- | --------------- | --------------- | --------------------- | -------------------- | -------------- | --------------- | ------------------- |
-| Abagail | Building sets   | LEGO blocks     | Building sets         | LEGO blocks          | "Blue"         | Complex Gift    | Learning Workshop   |
-| Abbey   | Toy trains      | Toy trains      | Toy trains            | Toy trains           | "Pink"         | Complex Gift    | General Workshop    |
-| Abbey   | Barbie dolls    | Play-Doh        | Barbie dolls          | Play-Doh             | "Purple"       | Moderate Gift   | General Workshop    |
-| Abbey   | Yo-yos          | Building blocks | Yo-yos                | Building blocks      | "Blue"         | Simple Gift     | General Workshop    |
-| Abbey   | Stuffed animals | Teddy bears     | Stuffed animals       | Teddy bears          | "White"        | Complex Gift    | General Workshop    |
+| name    | primary_wish    | backup_wish     | favorite_color | color_count | gift_complexity | workshop_assignment |
+| ------- | --------------- | --------------- | -------------- | ----------- | --------------- | ------------------- |
+| Abagail | Building sets   | LEGO blocks     | "Blue"         | 1           | Complex Gift    | Learning Workshop   |
+| Abbey   | Toy trains      | Toy trains      | "Pink"         | 2           | Complex Gift    | General Workshop    |
+| Abbey   | Barbie dolls    | Play-Doh        | "Purple"       | 1           | Moderate Gift   | General Workshop    |
+| Abbey   | Yo-yos          | Building blocks | "Blue"         | 5           | Simple Gift     | General Workshop    |
+| Abbey   | Stuffed animals | Teddy bears     | "White"        | 4           | Complex Gift    | General Workshop    |
 
 ---
 
