@@ -1,0 +1,31 @@
+# Count Pairs with Conditions
+
+This repository contains a Python solution to a problem where we count the number of valid pairs in an array that satisfy certain modulo and value conditions.
+
+## Problem Description
+
+Given an array of integers `nums` and an integer `k`, count the number of pairs `(i, j)` such that:
+- `i < j`
+- `nums[i] == nums[j]`
+- `(i * j) % k == 0`
+
+## Python Solution
+
+```python
+from collections import defaultdict
+
+class Solution:
+    def countPairs(self, nums: list[int], k: int) -> int:
+        modulo_map = defaultdict(lambda: defaultdict(int))
+        res = 0
+
+        for i, num in enumerate(nums):
+            mod_i = i % k
+
+            if num in modulo_map:
+                for mod_j, count in modulo_map[num].items():
+                    if (mod_i * mod_j) % k == 0:
+                        res += count
+            modulo_map[num][mod_i] += 1
+
+        return res
